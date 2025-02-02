@@ -1,11 +1,17 @@
 from rest_framework import serializers
 from .models import Listing, Booking, Review
+from django.contrib.auth.models import User
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email']
 
 
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
-        fields = ['id', 'listing', 'user', 'start_date', 'end_date', 'created_at']
+        fields = ['id', 'listing', 'start_date', 'end_date', 'created_at']
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:

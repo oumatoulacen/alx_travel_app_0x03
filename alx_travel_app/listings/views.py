@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from .models import Listing, Booking, Review
 from .serializers import ListingSerializer, BookingSerializer, ReviewSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from .tasks import send_booking_email_confirmation
 
 class ListingViewSet(viewsets.ModelViewSet):
     queryset = Listing.objects.prefetch_related('reviews')
@@ -20,6 +21,7 @@ class BookingViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # Automatically set the user to the current user
         serializer.save(user=self.request.user)
+        send_booking_email_confirmation.delay(self.request.user, serializer.data)
 
 
 class ReviewViewSet(viewsets.ModelViewSet):

@@ -11,21 +11,39 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import environ
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Take environment variables from .env file
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6q%%3rz8%48u2d*sr3lfd-o+h*^z&3oc-na@i-72gk@ci@y^9t'
+SECRET_KEY=env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+# CELERY CONFIGURATION
+CELERY_BROKER_URL = "amqp://localhost"  # RabbitMQ URL
+# CELERY_ACCEPT_CONTENT = ["json"]
+# CELERY_TASK_SERIALIZER = "json"
+
+# Email Settings (Using Gmail SMTP as an Example)
+EMAIL_BACKEND = env("EMAIL_BACKEND")
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_PORT = env("EMAIL_PORT")
+EMAIL_USE_TLS = env("EMAIL_USE_TLS")
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
 
 # Application definition
