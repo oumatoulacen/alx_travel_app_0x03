@@ -9,7 +9,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         # Create a sample user
-        user = User.objects.create_user(username='testuser', password='testpass123', email="lacenouamtou@gmail.com")
+
+        user = User.objects.create_user(username='testuser', password='testpass123')
         host = User.objects.create_user(username='hostuser', password='hostpass123')
 
         # Create sample listings

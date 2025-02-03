@@ -2,7 +2,8 @@ from rest_framework import viewsets
 from .models import Listing, Booking, Review
 from .serializers import ListingSerializer, BookingSerializer, ReviewSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from .tasks import send_booking_email_confirmation
+from .tasks import send_booking_email
+from django.contrib.auth.models import User
 
 class ListingViewSet(viewsets.ModelViewSet):
     queryset = Listing.objects.prefetch_related('reviews')
@@ -21,8 +22,11 @@ class BookingViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # Automatically set the user to the current user
         serializer.save(user=self.request.user)
-        send_booking_email_confirmation.delay(self.request.user, serializer.data)
 
+        user_id = self.request.user.id
+        booking_details = serializer.data
+        # Send an email confirmation using Celery
+        send_booking_email.delay(user_id, booking_details)
 
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()

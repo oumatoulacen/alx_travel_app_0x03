@@ -34,20 +34,19 @@ ALLOWED_HOSTS = []
 
 # CELERY CONFIGURATION
 CELERY_BROKER_URL = "amqp://localhost"  # RabbitMQ URL
+
 # CELERY_ACCEPT_CONTENT = ["json"]
 # CELERY_TASK_SERIALIZER = "json"
 
 # Email Settings (Using Gmail SMTP as an Example)
-EMAIL_BACKEND = env("EMAIL_BACKEND")
-EMAIL_HOST = env("EMAIL_HOST")
-EMAIL_PORT = env("EMAIL_PORT")
-EMAIL_USE_TLS = env("EMAIL_USE_TLS")
-EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")  # Your Gmail Email
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")  # Your Gmail Password
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
