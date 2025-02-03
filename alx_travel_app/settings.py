@@ -34,9 +34,18 @@ ALLOWED_HOSTS = []
 
 # CELERY CONFIGURATION
 CELERY_BROKER_URL = "amqp://localhost"  # RabbitMQ URL
-
 # CELERY_ACCEPT_CONTENT = ["json"]
 # CELERY_TASK_SERIALIZER = "json"
+
+# CELERY BEAT SETTINGS
+CELERY_BEAT_SCHEDULE = {
+    "send_booking_reminder": {
+        "task": "listings.tasks.send_booking_reminder",
+        "schedule": 36000.0,  # Run every hour (can be changed)
+    },
+}
+
+
 
 # Email Settings (Using Gmail SMTP as an Example)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -57,7 +66,8 @@ INSTALLED_APPS = [
 
     # Third-party apps
     'rest_framework',
-    'alx_travel_app.listings'
+    'alx_travel_app.listings',
+    "django_celery_beat",
 ]
 
 REST_FRAMEWORK = {
